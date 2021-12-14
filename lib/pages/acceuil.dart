@@ -59,7 +59,8 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
       child: Card(
         child: InkWell(
           child: ListTile(
-            title: Text(carte.numero + " - " + carte.nom),
+            leading: Image.network("https://backend-pokedex-vic-affile.herokuapp.com/" + carte.nom + "/mignature"),
+            title: Text("N°" + carte.numero + " - " + carte.nom),
             subtitle: Text(_afficherTypes(carte)),
           ),
         ),
@@ -89,7 +90,7 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
 
   String _afficherTypes(Carte carte) {
     if (carte.type_2 != "Aucun") {
-      return carte.type_1 + " - " + carte.type_2;
+      return carte.type_1 + " / " + carte.type_2;
     }
     return carte.type_1;
   }
