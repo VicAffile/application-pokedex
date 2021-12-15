@@ -19,7 +19,7 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
 
   @override
   void initState() {
-    _downloadPkms();
+    _telechargerPokemons();
   }
 
   @override
@@ -59,8 +59,8 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
       child: Card(
         child: InkWell(
           child: ListTile(
-            leading: Image.network("https://backend-pokedex-vic-affile.herokuapp.com/" + carte.nom + "/mignature"),
-            title: Text("N°" + carte.numero + " - " + carte.nom),
+            leading: Image.network("https://backend-pokedex-vic-affile.herokuapp.com/" + carte.nom_fr + "/mignature"),
+            title: Text("N°" + carte.numero + " - " + carte.nom_fr),
             subtitle: Text(_afficherTypes(carte)),
           ),
         ),
@@ -68,7 +68,7 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
     );
   }
 
-  void _downloadPkms() {
+  void _telechargerPokemons() {
     Future<http.Response> responsePokemons = http.get(
       Uri.parse("https://backend-pokedex-vic-affile.herokuapp.com"),
     );
