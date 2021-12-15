@@ -38,14 +38,49 @@ class _FicheState extends State<Fiche> {
               return Icon(Icons.warning);
             }
             if (!snapshot.hasData) {
-              return const CircularProgressIndicator();
-            } else {
-              return Column(
-                children: [
-                  Text(snapshot.data!.nom_fr),
-                  Text(snapshot.data!.description),
-                ],
+              return Center(
+                  child: const CircularProgressIndicator(),
               );
+            } else {
+              return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text("N°" + snapshot.data!.numero),
+                          const Spacer(),
+                          Text(snapshot.data!.nom_fr + " (" + snapshot.data!.nom_jap + ")"),
+                        ]
+                      ),
+                      Image.network("https://backend-pokedex-vic-affile.herokuapp.com/" + snapshot.data!.nom_fr + "/sprite"),
+                      Text(snapshot.data!.categorie),
+                      Text(_afficherTypes(snapshot.data!.type)),
+                      Row(
+                        children: [
+                          const Spacer(),
+                          Text("Taille : " + snapshot.data!.taille),
+                          const Spacer(),
+                          Text("/"),
+                          const Spacer(),
+                          Text("Poids : " + snapshot.data!.poids),
+                          const Spacer(),
+                        ],
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Description :"),
+                              Text(snapshot.data!.description, textAlign: TextAlign.justify,),
+                            ],
+                          ),
+                      ),
+                    ],
+                  ),
+              );
+
             }
           }
       ),
@@ -65,5 +100,12 @@ class _FicheState extends State<Fiche> {
     },
       onError: (var err) => developer.log(err.toString()),
     );
+  }
+
+  String _afficherTypes(List<dynamic> type) {
+    if (type.length == 2) {
+      return type[0] + " / " + type[1];
+    }
+    return type[0];
   }
 }

@@ -6,6 +6,8 @@ class Pokemon {
   final String nom_jap;
   final List<dynamic> type;
   final String categorie;
+  final String taille;
+  final String poids;
   final String description;
 
   Pokemon.fromJson(Map<String, dynamic> json) :
@@ -14,6 +16,8 @@ class Pokemon {
         nom_jap = json['nom_jap'],
         type = json["type"],
         categorie = json["categorie"],
+        taille = json["taille"],
+        poids = json["poids"],
         description = json["description"];
 
   Map<String, dynamic> toJson() => {
@@ -22,6 +26,8 @@ class Pokemon {
     'nom_jap': nom_jap,
     "type": type,
     "categorie": categorie,
+    "taille": taille,
+    "poids": poids,
     "description": description,
   };
 }

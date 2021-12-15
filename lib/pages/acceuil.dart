@@ -37,7 +37,9 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
               return Icon(Icons.warning);
             }
             if (!snapshot.hasData) {
-              return const CircularProgressIndicator();
+              return Center(
+                  child: const CircularProgressIndicator(),
+              );
             } else {
               return Column(
                 children: [
