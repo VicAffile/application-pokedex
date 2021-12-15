@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:application_pokedex/pages/fiche.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
@@ -53,15 +54,16 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
     );
   }
 
-  Widget _construireListe(Carte carte) {
+  Widget _construireListe(Carte pokemon) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Card(
         child: InkWell(
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=> Fiche(pokemon.nom_fr))),
           child: ListTile(
-            leading: Image.network("https://backend-pokedex-vic-affile.herokuapp.com/" + carte.nom_fr + "/mignature"),
-            title: Text("N°" + carte.numero + " - " + carte.nom_fr),
-            subtitle: Text(_afficherTypes(carte)),
+            leading: Image.network("https://backend-pokedex-vic-affile.herokuapp.com/" + pokemon.nom_fr + "/mignature"),
+            title: Text("N°" + pokemon.numero + " - " + pokemon.nom_fr),
+            subtitle: Text(_afficherTypes(pokemon)),
           ),
         ),
       ),
@@ -88,11 +90,11 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
     );
   }
 
-  String _afficherTypes(Carte carte) {
-    if (carte.type_2 != "Aucun") {
-      return carte.type_1 + " / " + carte.type_2;
+  String _afficherTypes(Carte pokemon) {
+    if (pokemon.type_2 != "Aucun") {
+      return pokemon.type_1 + " / " + pokemon.type_2;
     }
-    return carte.type_1;
+    return pokemon.type_1;
   }
 }
 
