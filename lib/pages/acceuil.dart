@@ -80,7 +80,6 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
         List<dynamic> listePokemonsJson = jsonDecode(value.body);
         List<Carte> listePokemons = <Carte>[];
         for (var pokemon in listePokemonsJson) {
-          pokemon['type'].add("Aucun");
           listePokemons.add(Carte.fromJson(pokemon as Map<String, dynamic>));
         }
         _streamCtrmerPkms.sink.add(listePokemons);
@@ -91,10 +90,10 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
   }
 
   String _afficherTypes(Carte pokemon) {
-    if (pokemon.type_2 != "Aucun") {
-      return pokemon.type_1 + " / " + pokemon.type_2;
+    if (pokemon.type.length == 2) {
+      return pokemon.type[0] + " / " + pokemon.type[1];
     }
-    return pokemon.type_1;
+    return pokemon.type[0];
   }
 }
 
