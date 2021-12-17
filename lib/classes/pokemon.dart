@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Pokemon {
   final String numero;
   final String nom_fr;

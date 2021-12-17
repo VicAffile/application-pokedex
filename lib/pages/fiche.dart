@@ -46,26 +46,41 @@ class _FicheState extends State<Fiche> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Text("N°" + snapshot.data!.numero),
-                          const Spacer(),
-                          Text(snapshot.data!.nom_fr + " (" + snapshot.data!.nom_jap + ")"),
-                        ]
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                            children: [
+                              Text("N°" + snapshot.data!.numero),
+                              const Spacer(),
+                              Text(snapshot.data!.nom_fr + " (" + snapshot.data!.nom_jap + ")"),
+                            ]
+                        ),
                       ),
-                      Image.network("https://backend-pokedex-vic-affile.herokuapp.com/" + snapshot.data!.nom_fr + "/sprite"),
-                      Text(snapshot.data!.categorie),
-                      Text(_afficherTypes(snapshot.data!.type)),
-                      Row(
-                        children: [
-                          const Spacer(),
-                          Text("Taille : " + snapshot.data!.taille),
-                          const Spacer(),
-                          Text("/"),
-                          const Spacer(),
-                          Text("Poids : " + snapshot.data!.poids),
-                          const Spacer(),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Image.network("https://backend-pokedex-vic-affile.herokuapp.com/" + snapshot.data!.nom_fr + "/sprite"),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(snapshot.data!.categorie),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: _afficherTypes(snapshot.data!.type),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          children: [
+                            const Spacer(),
+                            Text("Taille : " + snapshot.data!.taille),
+                            const Spacer(),
+                            Text("/"),
+                            const Spacer(),
+                            Text("Poids : " + snapshot.data!.poids),
+                            const Spacer(),
+                          ],
+                        ),
                       ),
                       Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -88,11 +103,11 @@ class _FicheState extends State<Fiche> {
   }
 
   void _telechargerPokemon(String nom) {
-    Future<http.Response> responseLogement = http.get(
+    Future<http.Response> reponsePokemon = http.get(
       Uri.parse("https://backend-pokedex-vic-affile.herokuapp.com/" + nom),
     );
 
-    responseLogement.then((value) {
+    reponsePokemon.then((value) {
       if (value.statusCode == 200) {
         Pokemon pokemon = Pokemon.fromJson(jsonDecode(value.body)[0] as Map<String, dynamic>);
         _streamCtrmerPokemon.sink.add(pokemon);
@@ -102,10 +117,20 @@ class _FicheState extends State<Fiche> {
     );
   }
 
-  String _afficherTypes(List<dynamic> type) {
-    if (type.length == 2) {
-      return type[0] + " / " + type[1];
+  Widget _afficherTypes(List<dynamic> types) {
+    if (types.length != 1) {
+      return Column(
+        children: [
+          Image.network("https://backend-pokedex-vic-affile.herokuapp.com/types/" + types[0] + "/image", width: 67.5, height: 15),
+          const Text(" / "),
+          Image.network("https://backend-pokedex-vic-affile.herokuapp.com/types/" + types[1] + "/image", width: 67.5, height: 15),
+        ],
+      );
     }
-    return type[0];
+    return Column(
+      children: [
+        Image.network("https://backend-pokedex-vic-affile.herokuapp.com/types/" + types[0] + "/image", width: 67.5, height: 15),
+      ],
+    );
   }
 }

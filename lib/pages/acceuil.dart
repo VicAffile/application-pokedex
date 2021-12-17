@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:application_pokedex/pages/fiche.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
+import 'package:application_pokedex/pages/fiche.dart';
 import 'package:application_pokedex/classes/carte.dart';
+import 'package:application_pokedex/classes/type.dart';
 
 class Acceuil extends StatefulWidget {
   const Acceuil({Key? key}) : super(key: key);
@@ -65,7 +66,7 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
           child: ListTile(
             leading: Image.network("https://backend-pokedex-vic-affile.herokuapp.com/" + pokemon.nom_fr + "/mignature"),
             title: Text("N°" + pokemon.numero + " - " + pokemon.nom_fr),
-            subtitle: Text(_afficherTypes(pokemon)),
+            subtitle: _afficherTypes(pokemon),
           ),
         ),
       ),
@@ -73,11 +74,11 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
   }
 
   void _telechargerPokemons() {
-    Future<http.Response> responsePokemons = http.get(
+    Future<http.Response> reponsePokemons = http.get(
       Uri.parse("https://backend-pokedex-vic-affile.herokuapp.com"),
     );
 
-    responsePokemons.then((value) {
+    reponsePokemons.then((value) {
       if (value.statusCode == 200) {
         List<dynamic> listePokemonsJson = jsonDecode(value.body);
         List<Carte> listePokemons = <Carte>[];
@@ -91,11 +92,21 @@ class _AcceuilState extends State<Acceuil> {TextEditingController tecMessage = T
     );
   }
 
-  String _afficherTypes(Carte pokemon) {
-    if (pokemon.type.length == 2) {
-      return pokemon.type[0] + " / " + pokemon.type[1];
+  Widget _afficherTypes(Carte pokemon) {
+    if (pokemon.type.length != 1) {
+      return Row(
+        children: [
+          Image.network("https://backend-pokedex-vic-affile.herokuapp.com/types/" + pokemon.type[0] + "/image", width: 67.5, height: 15),
+          const Text(" / "),
+          Image.network("https://backend-pokedex-vic-affile.herokuapp.com/types/" + pokemon.type[1] + "/image", width: 67.5, height: 15),
+        ],
+      );
     }
-    return pokemon.type[0];
+    return Row(
+      children: [
+        Image.network("https://backend-pokedex-vic-affile.herokuapp.com/types/" + pokemon.type[0] + "/image", width: 67.5, height: 15),
+      ],
+    );
   }
 }
 
